@@ -12,6 +12,7 @@ from chia.full_node.mempool_manager import MempoolManager
 from chia.types.blockchain_format.sized_bytes import bytes32
 from chia.wallet.transaction_record import TransactionRecord
 from chia.types.blockchain_format.program import Program
+
 # from blspy import AugSchemeMPL
 # from chia.types.spend_bundle import SpendBundle
 from chia.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
@@ -138,10 +139,12 @@ class TestNFTWallet:
         nft_wallet_0 = await NFTWallet.create_new_nft_wallet(
             wallet_node_0.wallet_state_manager, wallet_0, did_wallet_0.id()
         )
-        metadata = Program.to([
-            ('u', ["https://www.chia.net/img/branding/chia-logo.svg"]),
-            ('h', 0xd4584ad463139fa8c0d9f68f4b59f185),
-        ])
+        metadata = Program.to(
+            [
+                ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+                ("h", 0xD4584AD463139FA8C0D9F68F4B59F185),
+            ]
+        )
         tr = await nft_wallet_0.generate_new_nft(metadata, 20, ph)
 
         await time_out_assert_not_none(
@@ -216,11 +219,11 @@ class TestNFTWallet:
             did_coin_threeple[0],
             did_coin_threeple[1],
             did_coin_threeple[2],
-            trade_price_list
+            trade_price_list,
         )
         assert sb is not None
 
-        full_sb = await nft_wallet_1.receive_nft(sb)
+        await nft_wallet_1.receive_nft(sb)
         # from chia.wallet.util.debug_spend_bundle import debug_spend_bundle
         # debug_spend_bundle(full_sb)
         # breakpoint()
@@ -250,11 +253,11 @@ class TestNFTWallet:
             did_coin_threeple[0],
             did_coin_threeple[1],
             did_coin_threeple[2],
-            trade_price_list
+            trade_price_list,
         )
         assert sb is not None
 
-        full_sb = await nft_wallet_0.receive_nft(nsb)
+        await nft_wallet_0.receive_nft(nsb)
         await asyncio.sleep(5)
 
         for i in range(1, num_blocks):
@@ -395,11 +398,11 @@ class TestNFTWallet:
             did_coin_threeple[0],
             did_coin_threeple[1],
             did_coin_threeple[2],
-            trade_price_list
+            trade_price_list,
         )
         assert sb is not None
 
-        full_sb = await nft_wallet_1.receive_nft(sb)
+        await nft_wallet_1.receive_nft(sb)
         await asyncio.sleep(3)
 
         for i in range(1, num_blocks):
@@ -423,12 +426,11 @@ class TestNFTWallet:
             did_coin_threeple[0],
             did_coin_threeple[1],
             did_coin_threeple[2],
-            trade_price_list
+            trade_price_list,
         )
         assert sb is not None
 
-
-        full_sb = await nft_wallet_0.receive_nft(nsb)
+        await nft_wallet_0.receive_nft(nsb)
         await asyncio.sleep(5)
 
         for i in range(1, num_blocks):

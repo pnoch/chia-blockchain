@@ -35,7 +35,9 @@ def create_full_puzzle(singleton_id, current_owner_did, nft_transfer_program_has
 
 
 def create_transfer_puzzle(metadata, percentage, backpayment_address):
-    ret = NFT_TRANSFER_PROGRAM.curry(Program.to([backpayment_address, percentage, metadata, OFFER_MOD.get_tree_hash(), CAT_MOD.get_tree_hash()]))
+    ret = NFT_TRANSFER_PROGRAM.curry(
+        Program.to([backpayment_address, percentage, metadata, OFFER_MOD.get_tree_hash(), CAT_MOD.get_tree_hash()])
+    )
     return ret
 
 
@@ -120,7 +122,7 @@ def get_uri_list_from_transfer_program(transfer_prog: Program) -> List[str]:
         metadata = get_metadata_from_transfer_program(transfer_prog)
         assert metadata is not None
         for kv_pair in metadata.as_iter():
-            if kv_pair.first().as_atom() == b'u':
+            if kv_pair.first().as_atom() == b"u":
                 for uri in kv_pair.rest().as_iter():
                     uri_list.append(uri.as_atom())
         return uri_list
