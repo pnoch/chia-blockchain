@@ -6,7 +6,6 @@ from chia.util.streamable import streamable, Streamable
 from typing import Dict, Optional, List, Any, Set, Tuple
 from blspy import AugSchemeMPL
 from secrets import token_bytes
-from clvm.casts import int_to_bytes
 from chia.protocols.wallet_protocol import CoinState
 from chia.types.announcement import Announcement
 from chia.types.blockchain_format.coin import Coin
@@ -29,7 +28,6 @@ from chia.wallet.cat_wallet.cat_utils import (
     CAT_MOD,
     SpendableCAT,
     construct_cat_puzzle,
-    match_cat_puzzle,
     get_innerpuzzle_from_puzzle,
     unsigned_spend_bundle_for_spendable_cats,
 )
@@ -308,12 +306,8 @@ class NFTWallet:
         message_sb = await did_wallet.create_message_spend(messages)
         if message_sb is None:
             raise ValueError("Unable to created DID message spend.")
-        my_did_amount = message_sb.coin_solutions[0].coin.amount
-        my_did_parent = message_sb.coin_solutions[0].coin.parent_coin_info
 
-        innersol = Program.to(
-            [eve_coin.amount, did_wallet.did_info.current_inner.get_tree_hash(), 0]
-        )
+        innersol = Program.to([eve_coin.amount, did_wallet.did_info.current_inner.get_tree_hash(), 0])
         fullsol = Program.to(
             [
                 [launcher_coin.parent_coin_info, launcher_coin.amount],
@@ -453,7 +447,7 @@ class NFTWallet:
     async def receive_nft(self, sending_sb: SpendBundle, fee: uint64 = 0) -> SpendBundle:
         trade_price_list_discovered = None
         nft_id = None
-        #breakpoint()
+        # breakpoint()
         for coin_spend in sending_sb.coin_spends:
             if nft_puzzles.match_nft_puzzle(Program.from_bytes(bytes(coin_spend.puzzle_reveal)))[0]:
                 inner_sol = Program.from_bytes(bytes(coin_spend.solution)).rest().rest().first()
@@ -489,7 +483,7 @@ class NFTWallet:
 
         backpayment_amount = 0
         sb_list = [sending_sb]
-        spend_list = []
+
         for pair in trade_price_list_discovered.as_iter():
             if len(pair.as_python()) == 1:
                 backpayment_amount += pair.first().as_int()
@@ -518,7 +512,9 @@ class NFTWallet:
                                     asset_id,
                                     OFFER_MOD,
                                     Program.to([(nonce, [[royalty_address, amount]])]),
-                                    lineage_proof=LineageProof(cs.coin.parent_coin_info, cat_inner.get_tree_hash(), cs.coin.amount),
+                                    lineage_proof=LineageProof(
+                                        cs.coin.parent_coin_info, cat_inner.get_tree_hash(), cs.coin.amount
+                                    ),
                                 )
                                 spendable_cc_list.append(new_spendable_cc)
                                 break
