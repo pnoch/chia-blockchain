@@ -96,51 +96,6 @@ def create_spend_for_message(parent_of_message, recovering_coin, newpuz, pubkey)
     return coinsol
 
 
-def messages_to_puzzle(messages: List[Tuple[int, bytes]]):
-    """
-    Convert legacy messages list to a puzzle
-    :param messages: List of message
-    :return: A puzzle program
-    """
-    puzzle = []
-    for message in messages:
-        msg_type = message[0]
-        # type 0 is 0 value coin
-        # type 1 is coin announcement
-        # type 2 is puzzle announcement
-        if msg_type:
-            if msg_type == 1:
-                puzzle.append(f"(0x{ConditionOpcode.CREATE_COIN_ANNOUNCEMEN.hex()} {serialize_value(message[1])})")
-            else:
-                puzzle.append(f"(0x{ConditionOpcode.CREATE_PUZZLE_ANNOUNCEMENT.hex()} {serialize_value(message[1])})")
-        else:
-            puzzle.append(f"(0x{ConditionOpcode.CREATE_COIN.hex()} {serialize_value(message[1])} 0)")
-    conditions = " ".join(puzzle)
-    return Program.to(binutils.assemble(f"(q . ({conditions}))"))
-
-
-def serialize_value(value):
-    """
-    Serialize the message value
-    :param value: value of the message
-    :return: A string
-    """
-    if isinstance(value, str):
-        return f"'{value}'"
-    elif isinstance(value, bytes):
-        return f"0x{value.hex()}"
-    else:
-        return value
-
-
-def create_exit_message_puzzle():
-    """
-    Create message puzzle for exit
-    :return:
-    """
-    return Program.to(binutils.assemble(f"(q . ((0x{ConditionOpcode.CREATE_COIN.hex()} 0x00 -113)))"))
-
-
 # inspect puzzle and check it is a DID puzzle
 def check_is_did_puzzle(puzzle: Program):
     r = puzzle.uncurry()

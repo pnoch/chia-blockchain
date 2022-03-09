@@ -13,6 +13,7 @@ from chia.wallet.util.wallet_types import WalletType
 from tests.time_out_assert import time_out_assert
 from tests.setup_nodes import setup_simulators_and_wallets
 
+
 # from tests.wallet.sync.test_wallet_sync import wallet_height_at_least
 from chia.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
 
