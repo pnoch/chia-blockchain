@@ -33,7 +33,6 @@ def test_transfer_no_backpayments():
     did_two_innerpuz = DID_MOD.curry(did_one_pk, 0, 0)
     SINGLETON_STRUCT = Program.to((SINGLETON_MOD_HASH, (did_two, LAUNCHER_PUZZLE_HASH)))
 
-
     did_one_coin = Coin(did_one_parent, did_one_puzzle.get_tree_hash(), did_one_amount)
     # did_two_coin = Coin(did_two_parent, did_two_puzzle.get_tree_hash(), did_two_amount)
 

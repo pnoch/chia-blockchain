@@ -1351,7 +1351,7 @@ class TestMempoolManager:
     @pytest.mark.asyncio
     async def test_assert_fee_condition_fee_too_large(self, two_nodes):
         full_node_1, full_node_2, server_1, server_2 = two_nodes
-        cvp = ConditionWithArgs(ConditionOpcode.RESERVE_FEE, [int_to_bytes(2 ** 64)])
+        cvp = ConditionWithArgs(ConditionOpcode.RESERVE_FEE, [int_to_bytes(2**64)])
         dic = {cvp.opcode: [cvp]}
         blocks, spend_bundle1, peer, status, err = await self.condition_tester(two_nodes, dic, fee=10)
         assert status == MempoolInclusionStatus.FAILED
@@ -1739,7 +1739,7 @@ class TestMempoolManager:
 
         full_node_1, full_node_2, server_1, server_2 = two_nodes
         blocks = await full_node_1.get_all_full_blocks()
-        cvp = ConditionWithArgs(ConditionOpcode.ASSERT_MY_AMOUNT, [int_to_bytes(2 ** 64)])
+        cvp = ConditionWithArgs(ConditionOpcode.ASSERT_MY_AMOUNT, [int_to_bytes(2**64)])
         dic = {cvp.opcode: [cvp]}
         blocks, spend_bundle1, peer, status, err = await self.condition_tester(two_nodes, dic)
 
