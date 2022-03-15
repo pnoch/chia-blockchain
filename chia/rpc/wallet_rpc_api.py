@@ -1168,6 +1168,7 @@ class WalletRpcApi:
         address = request["artist_address"]
         if isinstance(address, str):
             address = decode_puzzle_hash(address)
+
         metadata = Program.to(
             [
                 ("u", request["uris"]),
