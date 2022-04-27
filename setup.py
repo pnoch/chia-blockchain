@@ -1,6 +1,7 @@
 from setuptools import setup
 
 dependencies = [
+    "multidict==5.2.0",  # Avoid 5.2.0 due to Avast
     "aiofiles==0.7.0",  # Async IO for files
     "blspy==1.0.11",  # Signature library
     "chiavdf==1.0.6",  # timelord and vdf verification
@@ -92,7 +93,6 @@ kwargs = dict(
         "chia.farmer",
         "chia.harvester",
         "chia.introducer",
-        "chia.plot_sync",
         "chia.plotters",
         "chia.plotting",
         "chia.pools",
