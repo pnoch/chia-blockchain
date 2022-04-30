@@ -145,10 +145,10 @@ class FarmerRpcApi:
         return {}
 
     async def get_harvesters(self, _: Dict):
-        return await self.service.get_harvesters(False)
+        return await self.service.get_harvesters()
 
     async def get_harvesters_summary(self, _: Dict[str, object]) -> Dict[str, object]:
-        return await self.service.get_harvesters(True)
+        return await self.service.get_harvesters()
 
     async def get_pool_login_link(self, request: Dict) -> Dict:
         launcher_id: bytes32 = bytes32(hexstr_to_bytes(request["launcher_id"]))
