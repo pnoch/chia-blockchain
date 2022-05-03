@@ -2,6 +2,7 @@ import asyncio
 import logging
 import signal
 import sqlite3
+from pathlib import Path
 from secrets import token_bytes
 from typing import AsyncGenerator, Optional
 
@@ -17,8 +18,8 @@ from chia.server.start_timelord import service_kwargs_for_timelord
 from chia.server.start_wallet import service_kwargs_for_wallet
 from chia.simulator.start_simulator import service_kwargs_for_full_node_simulator
 from chia.timelord.timelord_launcher import kill_processes, spawn_process
-from chia.types.peer_info import PeerInfo
 from chia.util.bech32m import encode_puzzle_hash
+from chia.util.config import load_config, save_config
 from chia.util.ints import uint16
 from chia.util.keychain import bytes_to_mnemonic
 from tests.block_tools import BlockTools
@@ -208,9 +209,6 @@ async def setup_harvester(
     save_config(root_path, "config.yaml", config)
     kwargs = service_kwargs_for_harvester(root_path, config["harvester"], consensus_constants)
     kwargs.update(
-        server_listen_ports=[port],
-        advertised_port=port,
-        connect_peers=[PeerInfo(self_hostname, farmer_port)],
         parse_cli_args=False,
         connect_to_daemon=False,
         service_name_prefix="test_",
