@@ -1,7 +1,8 @@
 import asyncio
 import logging
 from secrets import token_bytes
-from typing import Dict, List
+from typing import AsyncIterator, Dict, List, Tuple
+from pathlib import Path
 
 from chia.consensus.constants import ConsensusConstants
 from chia.full_node.full_node_api import FullNodeAPI
